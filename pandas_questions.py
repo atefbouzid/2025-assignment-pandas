@@ -3,7 +3,8 @@
 In short, we want to make beautiful map to report results of a referendum. In
 some way, we would like to depict results with something similar to the maps
 that you can find here:
-https://github.com/x-datascience-datacamp/datacamp-assignment-pandas/blob/main/example_map.png
+https://github.com/x-datascience-datacamp/
+datacamp-assignment-pandas/blob/main/example_map.png
 
 To do that, you will load the data as pandas.DataFrame, merge the info and
 aggregate them by regions and finally plot them on a map using `geopandas`.
@@ -67,7 +68,13 @@ def compute_referendum_result_by_regions(referendum_and_areas):
     The return DataFrame should be indexed by `code_reg` and have columns:
     ['name_reg', 'Registered', 'Abstentions', 'Null', 'Choice A', 'Choice B']
     """
-    columns_to_sum = ['Registered', 'Abstentions', 'Null', 'Choice A', 'Choice B']
+    columns_to_sum = [
+        'Registered',
+        'Abstentions',
+        'Null',
+        'Choice A',
+        'Choice B',
+    ]
     grouped = referendum_and_areas.groupby('name_reg')[columns_to_sum].sum()
 
     return grouped.reset_index()
@@ -88,7 +95,10 @@ def plot_referendum_map(referendum_result_by_regions):
         referendum_result_by_regions, left_on='nom', right_on='name_reg'
     )
 
-    merged['ratio'] = merged['Choice A'] / (merged['Choice A'] + merged['Choice B'])
+    merged['ratio'] = (
+        merged['Choice A']
+        / (merged['Choice A'] + merged['Choice B'])
+    )
 
     merged.plot(column='ratio', legend=True)
 
