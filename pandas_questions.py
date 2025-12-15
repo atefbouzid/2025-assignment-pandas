@@ -29,7 +29,12 @@ def merge_regions_and_departments(regions, departments):
     ['code_reg', 'name_reg', 'code_dep', 'name_dep']
     """
     regions = regions.rename(columns={'code': 'code_reg', 'name': 'name_reg'})
-    departments = departments.rename(columns={'code': 'code_dep', 'name': 'name_dep'})
+    departments = departments.rename(
+        columns={
+            'code': 'code_dep',
+            'name': 'name_dep',
+        }
+    )
 
     merged = pd.merge(
         departments, regions, left_on='region_code', right_on='code_reg'
@@ -51,7 +56,11 @@ def merge_referendum_and_areas(referendum, regions_and_departments):
     referendum = referendum[~referendum['Department code'].str.contains('Z')]
 
     # Pad department code to match regions_and_departments format (01, 02, etc.)
-    referendum['Department code'] = referendum['Department code'].astype(str).str.zfill(2)
+    referendum['Department code'] = (
+        referendum['Department code']
+        .astype(str)
+        .str.zfill(2)
+    )
 
     merged = pd.merge(
         referendum, regions_and_departments,
